@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="notebooks">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Busca com Lupa</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Calibri Light', sans-serif;
+      background: #fff;
+           margin: 0;
+  padding: 0;
+  height: 100%;
+      overflow: hidden; /* <- ESSENCIAL pra sumir a rolagem do body */
+    }
+
+    #notebooks {
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f4f4;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+
+.fixed-filters {
+  position: sticky;
+  top: 0;
+  background-color: #f4f4f4;
+  padding: 16px 0 12px;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+
+    .search-container {
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .search-container input {
+      width: 100%;
+      height: 44px;
+      padding: 10px 12px 10px 42px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 14px;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: #0000008a;
+      pointer-events: none;
+    }
+
+    select {
+      width: 100%;
+      height: 36px;
+      padding: 5px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+
+    .product-count {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      width: 100%;
+    }
+
+    li {
+      background: white;
+      padding: 12px 15px;
+      border-left: 4px solid #3fccb9;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    strong {
+      display: block;
+      color: #444;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 5px;
+    }
+
+    .title-row strong {
+      font-weight: bold;
+      font-size: 16px;
+      color: #444;
+      margin: 0;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .code {
+      font-size: 12px;
+      color: #888;
+      margin-left: 10px;
+      flex-shrink: 0;
+    }
+
+    .material-symbols-outlined {
+  vertical-align: middle;
+  font-size: 20px;
+  margin-right: 6px;
+  color: #0000008a
+}
+
+
+    /* Garante que o layout use toda a tela no mobile */
+    @media (max-width: 600px) {
+  html, body {
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+  }
+
+  #notebooks {
+    padding: 16px 12px;
+  }
+
+  .fixed-filters {
+    padding: 16px 0 10px;
+  }
+
+  .search-container input {
+    width: 100%;
+    font-size: 18px;
+    height: 52px;
+    padding: 10px 12px 10px 42px;
+    border: 1px solid #ccc;
+  }
+
+  select {
+    width: 100%;
+    font-size: 18px;
+    height: 48px;
+    margin-bottom: 16px;
+    padding: 8px 10px;
+  }
+
+  .product-count {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  li {
+    padding: 20px 16px;
+  }
+
+  .title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .title-row strong {
+    font-size: 20px;
+    white-space: normal;
+    line-height: 1.4;
+  }
+
+  .code {
+    font-size: 17px;
+    color: #666;
+    margin-left: 0;
+  }
+
+  p {
+    font-size: 18px;
+    line-height: 1.6;
+  }
+}
+
+
+
+  </style>
+</head>
+
+<body ng-controller="NotebookListCtrl">
+  <div id="notebooks">
+    
+    <div class="fixed-filters">
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          type="text"
+          id="query"
+          ng-model="query"
+          placeholder="Pesquisar produtos…"
+          autocomplete="off"
+        />
+      </div>
+
+      <select ng-model="orderList">
+        <option value="name">Ordenar por Nome (A–Z)</option>
+        <option value="-age">Ordenar por Mais Recentes</option>
+        <option value="age">Ordenar por Mais Antigos</option>
+      </select>
+
+      <div class="product-count">
+        <span class="material-symbols-outlined">package_2</span>
+        Produtos: {{(notebooks | filter:query).length}}
+      </div>
+      
+
+    </div> <!-- Fim da fixed-filters -->
+
+    <div class="product-list">
+      <ul>
+        <li ng-repeat="notebook in notebooks | filter:query | orderBy: orderList">
+          <div class="title-row">
+            <strong>{{notebook.name}}</strong>
+            <span class="code">{{notebook.age}}</span>
+          </div>
+          <p>{{notebook.procesor}}</p>
+        </li>
+      </ul>
+    </div>
+    
+
+
+  <script>
+    var notebooks = angular.module('notebooks', []);
+
+    notebooks.controller('NotebookListCtrl', function ($scope) {
+      $scope.notebooks = [
+        {
+          name: " B.I. – Implantação Sistema Atua",
+          procesor: "É um serviço de BI especializado para empresas de transporte e logística que utilizam o TMS Atua. Através de dashboards interativos e automatizados, consolidamos dados operacionais, financeiros e estratégicos, proporcionando visão unificada e gestão eficiente.",
+          age: "ABI001"
+        },
+        {
+          name: "B.I. – Horas de Desenvolvimento",
+          procesor: "É um serviço de BI sob demanda, onde empresas adquirem pacotes de horas para personalização e otimização de dashboards no Power BI. Permite solicitar novas análises, ajustes, integrações e melhorias contínuas, garantindo que o BI evolua conforme as necessidades do negócio",
+          age: "ABI002"
+        },
+        {
+          name: "B.I. - Horas de Treinamento",
+          procesor: "É um serviço de capacitação prática que ensina equipes a criar e gerenciar seus próprios dashboards no Power BI, promovendo autonomia na análise de dados e permitindo uma cultura mais analítica, com decisões baseadas em informações claras e acessíveis",
+          age: "ABI003"
+        },
+        {
+          name: "B.I. - Implantação Demais Sistemas",
+          procesor: "É um serviço de BI que integra dados de sistemas diversos usados pela empresa em dashboards inteligentes no Power BI, automatizando relatórios e organizando informações operacionais, financeiras e estratégicas para uma gestão mais eficiente e visual.",
+          age: "ABI004"
+        },
+
+        {
+          name: "B.I. - Sustentação Mensal",
+          procesor: "É um serviço de suporte contínuo para manter dashboards em Power BI sempre atualizados e aderentes à realidade do negócio, com ajustes, melhorias e inclusão de novos dados, garantindo que a gestão continue sendo guiada por informações confiáveis.",
+          age: "ABI005"
+        }
+
+        
+      ];
+      $scope.orderList = "name";
+    });
+  </script>
+</body>
+</html>
