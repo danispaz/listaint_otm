@@ -202,11 +202,20 @@
     line-height: 1.6;
   }
 }
+.form-icon {
+  color: #888;
+  font-size: 18px;
+  transition: color 0.2s ease;
+}
 
+.form-icon:hover {
+  color: #0078d4;
+}
 
 
   </style>
 </head>
+
 
 <body ng-controller="NotebookListCtrl">
   <div id="notebooks">
@@ -242,14 +251,23 @@
         <li ng-repeat="notebook in notebooks | filter:query | orderBy: orderList">
           <div class="title-row">
             <strong>{{notebook.name}}</strong>
-            <span class="code">{{notebook.age}}</span>
+        
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="code">{{notebook.age}}</span>
+              <a 
+                ng-href="{{notebook.url}}" 
+                target="_blank" 
+                class="form-icon" 
+                title="Ver página do produto">
+                <i class="fas fa-file-alt"></i>
+              </a>
+            </div>
           </div>
           <p>{{notebook.procesor}}</p>
         </li>
+     
       </ul>
     </div>
-    
-
 
   <script>
     var notebooks = angular.module('notebooks', []);
@@ -259,28 +277,33 @@
         {
           name: " B.I. – Implantação Sistema Atua",
           procesor: "É um serviço de BI especializado para empresas de transporte e logística que utilizam o TMS Atua. Através de dashboards interativos e automatizados, consolidamos dados operacionais, financeiros e estratégicos, proporcionando visão unificada e gestão eficiente.",
-          age: "ABI001"
+          age: "ABI001",
+          url:"https://funcionalx.sharepoint.com/sites/produtos/SitePages/Produtos%20INT/B.I.---Implanta%C3%A7%C3%A3o-Sistema-Atua.aspx"
         },
         {
           name: "B.I. – Horas de Desenvolvimento",
           procesor: "É um serviço de BI sob demanda, onde empresas adquirem pacotes de horas para personalização e otimização de dashboards no Power BI. Permite solicitar novas análises, ajustes, integrações e melhorias contínuas, garantindo que o BI evolua conforme as necessidades do negócio",
-          age: "ABI002"
+          age: "ABI002",
+          url:"https://funcionalx.sharepoint.com/sites/produtos/SitePages/Produtos%20INT/B.I.-%E2%80%93-Horas-de-Desenvolvimento.aspx"
         },
         {
           name: "B.I. - Horas de Treinamento",
           procesor: "É um serviço de capacitação prática que ensina equipes a criar e gerenciar seus próprios dashboards no Power BI, promovendo autonomia na análise de dados e permitindo uma cultura mais analítica, com decisões baseadas em informações claras e acessíveis",
-          age: "ABI003"
+          age: "ABI003",
+          url:"https://funcionalx.sharepoint.com/sites/produtos/SitePages/Produtos%20INT/B.I.---Horas-de-Treinamento.aspx"
         },
         {
           name: "B.I. - Implantação Demais Sistemas",
           procesor: "É um serviço de BI que integra dados de sistemas diversos usados pela empresa em dashboards inteligentes no Power BI, automatizando relatórios e organizando informações operacionais, financeiras e estratégicas para uma gestão mais eficiente e visual.",
-          age: "ABI004"
+          age: "ABI004",
+          url:"https://funcionalx.sharepoint.com/sites/produtos/SitePages/Produtos%20INT/B.I.---Implanta%C3%A7%C3%A3o-Demais-Sistemas.aspx"
         },
 
         {
           name: "B.I. - Sustentação Mensal",
           procesor: "É um serviço de suporte contínuo para manter dashboards em Power BI sempre atualizados e aderentes à realidade do negócio, com ajustes, melhorias e inclusão de novos dados, garantindo que a gestão continue sendo guiada por informações confiáveis.",
-          age: "ABI005"
+          age: "ABI005",
+          url:"https://funcionalx.sharepoint.com/sites/produtos/SitePages/Produtos%20INT/B.I.---Sustenta%C3%A7%C3%A3o-Mensal.aspx"
         }
 
         
